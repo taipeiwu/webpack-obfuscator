@@ -14,16 +14,16 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "javascript-obfuscator": "0.18.0",
-    "multi-stage-sourcemap": "0.2.1",
-    "multimatch": "2.1.0"
+    "javascript-obfuscator": "^0.18.1",
+    "multi-stage-sourcemap": "^0.3.1",
+    "multimatch": "^2.1.0"
   },
   "devDependencies": {
-    "@types/node": "8.0.47",
-    "@types/webpack": "3.0.14",
-    "typescript": "2.6.1",
-    "typings": "2.1.1",
-    "webpack": "3.8.1"
+    "@types/node": "^10.9.3",
+    "@types/webpack": "^4.4.11",
+    "typescript": "^3.0.1",
+    "webpack": "^4.17.1",
+    "webpack-command": "^0.4.1"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,6 @@
     "watch": "npm run tsc:w",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "typings": "node_modules/.bin/typings install",
     "test": "$(npm bin)/webpack --config test/config/webpack.config.js"
   },
   "author": {

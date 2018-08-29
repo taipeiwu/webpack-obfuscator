@@ -3,6 +3,7 @@
 const JavaScriptObfuscator = require('../../index');
 
 module.exports = {
+    mode: 'production',
     entry: {
         'index': './test/input/index.js',
         'index-excluded': './test/input/index-excluded.js'

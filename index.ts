@@ -34,71 +34,84 @@ class WebpackObfuscator {
      * @param {Compiler} compiler
      */
     public apply (compiler: Compiler): void {
-        compiler.plugin('compilation', (compilation: any) => {
-            compilation.plugin("optimize-chunk-assets", (chunks: any[], callback: () => void) => {
-                let files = [];
-
-                chunks.forEach((chunk) => {
-                    chunk['files'].forEach((file) => {
-                        files.push(file);
-                    });
+        if (compiler.hooks) {
+            compiler.hooks.compilation.tap('WebpackObfuscator', (compilation: any) => {
+                compilation.hooks.optimizeChunkAssets.tap('WebpackObfuscator', (chunks: any[]) => {
+                    this.obfuscate(compilation, chunks);
                 });
-
-                compilation.additionalChunkAssets.forEach((file) => {
-                    files.push(file);
-                });
-
-                files.forEach((file) => {
-                    if (!/\.js($|\?)/i.test(file) || this.shouldExclude(file, this.excludes)) {
-                        return;
-                    }
-
-                    let asset = compilation.assets[file],
-                        input, inputSourceMap;
-
-                    if (this.options.sourceMap !== false) {
-                    	if (asset.sourceAndMap) {
-                    		let sourceAndMap = asset.sourceAndMap();
-                    		inputSourceMap = sourceAndMap.map;
-                    		input = sourceAndMap.source;
-                    	} else {
-                    		inputSourceMap = asset.map();
-                    		input = asset.source();
-                    	}
-
-                        if (inputSourceMap) {
-                            this.options.sourceMap = true;
-                        }
-                    } else {
-                    	input = asset.source();
-                    }
-
-                    let obfuscationResult: any = JavaScriptObfuscator.obfuscate(
-                        input,
-                        this.options
-                    );
-
-                    if (this.options.sourceMap) {
-                        let obfuscationSourceMap: any = obfuscationResult.getSourceMap(),
-                            transferredSourceMap: any = transferSourceMap({
-                                fromSourceMap: obfuscationSourceMap,
-                                toSourceMap: inputSourceMap
-                            });
-
-                        compilation.assets[file] = new SourceMapSource(
-                            obfuscationResult.toString(),
-                            file,
-                            JSON.parse(transferredSourceMap),
-                            asset.source(),
-                            inputSourceMap
-                        );
-                    } else {
-                        compilation.assets[file] = new RawSource(obfuscationResult.toString());
-                    }
-                });
-
-                callback();
             });
+        } else {
+            // Backwards compatibility
+            compiler.plugin('compilation', (compilation: any) => {
+                compilation.plugin("optimize-chunk-assets", (chunks: any[], callback: () => void) => {
+                    this.obfuscate(compilation, chunks);
+    
+                    callback();
+                });
+            });
+        }
+    }
+
+    private obfuscate(compilation: any, chunks: any[]): void {
+        let files = [];
+
+        chunks.forEach((chunk) => {
+            chunk['files'].forEach((file) => {
+                files.push(file);
+            });
+        });
+
+        compilation.additionalChunkAssets.forEach((file) => {
+            files.push(file);
+        });
+
+        files.forEach((file) => {
+            if (!/\.js($|\?)/i.test(file) || this.shouldExclude(file, this.excludes)) {
+                return;
+            }
+
+            let asset = compilation.assets[file],
+                input, inputSourceMap;
+
+            if (this.options.sourceMap !== false) {
+                if (asset.sourceAndMap) {
+                    let sourceAndMap = asset.sourceAndMap();
+                    inputSourceMap = sourceAndMap.map;
+                    input = sourceAndMap.source;
+                } else {
+                    inputSourceMap = asset.map();
+                    input = asset.source();
+                }
+
+                if (inputSourceMap) {
+                    this.options.sourceMap = true;
+                }
+            } else {
+                input = asset.source();
+            }
+
+            let obfuscationResult: any = JavaScriptObfuscator.obfuscate(
+                input,
+                this.options
+            );
+
+            if (this.options.sourceMap) {
+                let obfuscationSourceMap: any = obfuscationResult.getSourceMap(),
+                    transferredSourceMap: any = transferSourceMap({
+                        fromSourceMap: obfuscationSourceMap,
+                        toSourceMap: inputSourceMap
+                    });
+
+                compilation.assets[file] = new SourceMapSource(
+                    obfuscationResult.toString(),
+                    file,
+                    JSON.parse(transferredSourceMap),
+                    asset.source(),
+                    inputSourceMap
+                );
+            } else {
+                compilation.assets[file] = new RawSource(obfuscationResult.toString());
+            }
         });
     }
 

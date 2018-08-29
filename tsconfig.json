@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES6",
     "module": "commonjs",
     "sourceMap": false,
     "emitDecoratorMetadata": true,
@@ -14,7 +14,5 @@
   "exclude": [
     "test",
     "node_modules",
-    "typings/browser",
-    "typings/browser.d.ts"
   ]
 }
