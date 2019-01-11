@@ -1,6 +1,6 @@
 {
   "name": "webpack-obfuscator",
-  "version": "0.18.0",
+  "version": "0.18.2",
   "description": "javascript-obfuscator plugin for Webpack",
   "keywords": [
     "obfuscator",
@@ -14,16 +14,16 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "javascript-obfuscator": "^0.18.1",
+    "javascript-obfuscator": "taipeiwu/javascript-obfuscator",
     "multi-stage-sourcemap": "^0.3.1",
-    "multimatch": "^2.1.0"
+    "multimatch": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^10.9.3",
-    "@types/webpack": "^4.4.11",
-    "typescript": "^3.0.1",
-    "webpack": "^4.17.1",
-    "webpack-command": "^0.4.1"
+    "@types/node": "^10.12.18",
+    "@types/webpack": "^4.4.22",
+    "typescript": "^3.2.2",
+    "webpack": "^4.28.4",
+    "webpack-command": "^0.4.2"
   },
   "repository": {
     "type": "git",
