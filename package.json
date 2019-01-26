@@ -14,15 +14,15 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "javascript-obfuscator": "taipeiwu/javascript-obfuscator",
+    "javascript-obfuscator": "github:taipeiwu/javascript-obfuscator",
     "multi-stage-sourcemap": "^0.3.1",
     "multimatch": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^10.12.18",
-    "@types/webpack": "^4.4.22",
-    "typescript": "^3.2.2",
-    "webpack": "^4.28.4",
+    "@types/webpack": "^4.4.24",
+    "typescript": "^3.2.4",
+    "webpack": "^4.29.0",
     "webpack-command": "^0.4.2"
   },
   "repository": {
