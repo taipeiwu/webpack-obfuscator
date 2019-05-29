@@ -53,7 +53,7 @@ class WebpackObfuscator {
     }
 
     private obfuscate(compilation: any, chunks: any[]): void {
-        let files = [];
+        let files: any[] = [];
 
         chunks.forEach((chunk) => {
             chunk['files'].forEach((file) => {
